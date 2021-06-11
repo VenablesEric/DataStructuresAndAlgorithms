@@ -12,7 +12,7 @@ namespace DataStructuresAndAlgorithms
             List<string> emptyList = new List<string>();
             List<string> nullList;
 
-            List<string> sorted = Sorts.MergeSort<string>(emptyList);
+            List<string> sorted = Sorts.QuickSort<string>(listOfWords);
             sorted.ForEach(Console.WriteLine);
 
         }

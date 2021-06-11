@@ -165,24 +165,76 @@ namespace DataStructuresAndAlgorithms
             return sortingList;
         }
 
-        private static void QuickSort<T>(List<T> unsortedList, int start, int end)
+        private static void QuickSort<T>(List<T> unsortedList, int low, int high)
         {
-            if(start < end)
+            if (low < high)
             {
-                int pivotIndex = Partition<T>(unsortedList, start, end);
-                QuickSort<T>(unsortedList, start, pivotIndex - 1);
-                QuickSort<T>(unsortedList, pivotIndex + 1, end);
+                int pivotIndex = Partition<T>(unsortedList, low, high);
+                QuickSort<T>(unsortedList, low, pivotIndex - 1);
+                QuickSort<T>(unsortedList, pivotIndex + 1, high);
             }
         }
 
-        private static int Partition<T>(List<T> unsortedList, int start, int end)
+        private static int Partition<T>(List<T> unsortedList, int low, int high)
         {
-            T pivot = unsortedList[start];
+            FindPivot<T>(unsortedList, low, high);
+            T pivot = unsortedList[high];;
+            int i = (low - 1);
 
-            for(int i = start; start <= end; i++)
+
+            for (int j = low; j < high; j++)
             {
-
+                if (((IComparable)unsortedList[j]).CompareTo(pivot) <= 0)
+                {
+                    i++;
+                    Swap<T>(unsortedList,j,i);
+                }
             }
+
+            Swap<T>(unsortedList,i + 1, high);
+            return i + 1;
+        }
+
+        private static void FindPivot<T>(List<T> unsortedList, int low, int high)
+        {
+            if (unsortedList.Count < 3)
+                return;
+            
+            int indexOfLowest;
+            int indexOfHighest;
+
+
+            if (((IComparable)unsortedList[low]).CompareTo(unsortedList[high]) < 0)
+            {
+                indexOfLowest = low;
+                indexOfHighest = high;
+            }
+            else
+            {
+                indexOfLowest = high;
+                indexOfHighest = low;
+            }
+
+            int indexOfMiddle = unsortedList.Count / 2;
+
+            if (((IComparable)unsortedList[indexOfLowest]).CompareTo(unsortedList[indexOfMiddle]) > 0)
+            {
+                Swap<T>(unsortedList, low, high);
+                return;
+            }
+            if (((IComparable)unsortedList[indexOfHighest]).CompareTo(unsortedList[indexOfMiddle]) < 0)
+            {
+                return;
+            }
+
+            Swap<T>(unsortedList, indexOfMiddle, high);
+        }
+
+        private static void Swap<T>(List<T> list, int indexA, int indexB)
+        {
+            T tmp = list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = tmp;
         }
 
 
