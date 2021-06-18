@@ -9,6 +9,7 @@ namespace DataStructuresAndAlgorithms
 
         /// <summary>
         ///  A Bubble Sort for List<> that implements the Icomparable interface.
+        ///  A Bubble Sort will push the heighest number to the end of the array and keep looping untill sorted.
         ///  O notation O(N^2).
         /// </summary>
         /// <typeparam name="T">must implemnts the Icomparable interface</typeparam>
@@ -29,12 +30,13 @@ namespace DataStructuresAndAlgorithms
             // The list size to check can be shorten for each loop as the end of the list is sorted. 
             int listSize = list.Count - 1;
 
-            // Keeps looping through the list until sorted.
+            // Keeps looping until list is sorted.
             bool isSorted = true;
             do
             {
                 isSorted = true;
 
+                // Loop through the list and push the heighest value to the end.
                 for (int i = 0; i < listSize; i++)
                 {
                     // Swap elements if bigger than the next element in the list.
@@ -48,41 +50,43 @@ namespace DataStructuresAndAlgorithms
             } while (!isSorted);
         }
 
-        public static List<T> SelectionSort<T>(List<T> unsortedList)
+        /// <summary>
+        ///  A Selection Sort for List<> that implements the Icomparable interface.
+        ///  A Selection Sort will find the smallest value and put it at the begining of the list then move to the next smallest.
+        ///  O notation O(N^2).
+        /// </summary>
+        /// <typeparam name="T">must implemnts the Icomparable interface</typeparam>
+        /// <param name="list"> to be sorted.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="list"/> is null.</exception>
+        /// <exception cref="System.NotSupportedException">Thrown when T does not implements the Icomparable interface.</exception>
+        public static void SelectionSort<T>(this List<T> list)
         {
-            // Null Exception
-            if (unsortedList == null)
-                throw new ArgumentNullException(nameof(unsortedList), "is null");
+            // Throw exception if list is null.
+            if (list == null)
+                throw new ArgumentNullException(nameof(list), "is null!");
 
-            // Non-implementation of Icomparable interface for generic exception
+            // Throw execption if list generic type does not implements Icomparable interface.
             if (!typeof(IComparable).IsAssignableFrom(typeof(T)))
-                throw new NotSupportedException($"{nameof(T)} does not implements the interface of {nameof(IComparable)}");
+                throw new NotSupportedException($"{nameof(T)} does not implements the {nameof(IComparable)} interface!");
 
-            // Shallow copy of inputed list will be sorted
-            List<T> sortingList = new List<T>(unsortedList);
 
-            for (int i = 0; i < (sortingList.Count - 1); i++)
+            // Sort the list by looking for the smallest value.
+            for (int i = 0; i < (list.Count - 1); i++)
             {
-                int indexOfLowest = i;
-                for (int j = i + 1; j < sortingList.Count; j++)
+                int currentMinimum = i;
+
+                // Look for the smallest unsorted value.
+                for (int j = i + 1; j < list.Count; j++)
                 {
-                    // Swap elements if bigger than the other
-                    if (((IComparable)sortingList[j]).CompareTo(sortingList[indexOfLowest]) < 0)
-                    {
-                        indexOfLowest = j;
-                    }
+                    // Set currentMinimum to the new smallest value.
+                    if (((IComparable)list[j]).CompareTo(list[currentMinimum]) < 0)
+                        currentMinimum = j;
                 }
 
-                if (i != indexOfLowest)
-                {
-                    T tmp = sortingList[i];
-                    sortingList[i] = sortingList[indexOfLowest];
-                    sortingList[indexOfLowest] = tmp;
-                }
+                // Put currentMinimum into it's sorted place.
+                if (i != currentMinimum)
+                    Swap<T>(list, i, currentMinimum);
             }
-
-            return sortingList;
-
         }
 
         public static List<T> InsertionSort<T>(List<T> unsortedList)
