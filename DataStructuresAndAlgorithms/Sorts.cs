@@ -4,50 +4,48 @@ using System.Text;
 
 namespace DataStructuresAndAlgorithms
 {
-    class Sorts
+    static class Sorts
     {
+
         /// <summary>
-        ///  A Bubble Sort for generic lists that implements the Icomparable interface.
+        ///  A Bubble Sort for List<> that implements the Icomparable interface.
         ///  O notation O(N^2).
         /// </summary>
         /// <typeparam name="T">must implemnts the Icomparable interface</typeparam>
-        /// <param name="unsortedList">will be shallow copied.</param>
-        /// <returns>A new list that is sorted.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown when parameter is null.</exception>
+        /// <param name="list"> to be sorted.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="list"/> is null.</exception>
         /// <exception cref="System.NotSupportedException">Thrown when T does not implements the Icomparable interface.</exception>
-        public static List<T> BubbleSort<T>(List<T> unsortedList)
+        public static void BubbleSort<T>(this List<T> list)
         {
-            // Null Exception
-            if (unsortedList == null)
-                throw new ArgumentNullException(nameof(unsortedList), "is null");
+            // Throw exception if list is null.
+            if (list == null)
+                throw new ArgumentNullException(nameof(list), "is null!");
 
-            // Non-implementation of Icomparable interface for generic exception
+            // Throw execption if list generic type does not implements Icomparable interface.
             if (!typeof(IComparable).IsAssignableFrom(typeof(T)))
-                throw new NotSupportedException($"{nameof(T)} does not implements the interface of {nameof(IComparable)}");
+                throw new NotSupportedException($"{nameof(T)} does not implements the {nameof(IComparable)} interface!");
 
-            // Shallow copy of inputed list will be sorted
-            List<T> sortingList = new List<T>(unsortedList);
+            // Each loop will push the next biggest number to the end of the list.
+            // The list size to check can be shorten for each loop as the end of the list is sorted. 
+            int listSize = list.Count - 1;
 
-            // Keeps looping through the list until sorted
+            // Keeps looping through the list until sorted.
             bool isSorted = true;
             do
             {
                 isSorted = true;
 
-                for (int i = 0; i < (sortingList.Count - 1); i++)
+                for (int i = 0; i < listSize; i++)
                 {
-                    // Swap elements if bigger than the other
-                    if (((IComparable)sortingList[i]).CompareTo(sortingList[i + 1]) > 0)
+                    // Swap elements if bigger than the next element in the list.
+                    if (((IComparable)list[i]).CompareTo(list[i + 1]) > 0)
                     {
-                        T tmp = sortingList[i];
-                        sortingList[i] = sortingList[i + 1];
-                        sortingList[i + 1] = tmp;
+                        Swap<T>(list,i, i + 1);
                         isSorted = false;
+                        listSize--;
                     }
                 }
             } while (!isSorted);
-
-            return sortingList;
         }
 
         public static List<T> SelectionSort<T>(List<T> unsortedList)
@@ -239,7 +237,8 @@ namespace DataStructuresAndAlgorithms
 
         public static void HeapSort<T>(List<T> list)
         {
-            // Build max heap
+            // Build max heap.
+            // Starts at the seconds lowest row and pushs low numbers down and high numbers up.
             for (int i = list.Count / 2 - 1; i >= 0; i--)
                 Heapify(list, list.Count, i);
 
@@ -247,6 +246,7 @@ namespace DataStructuresAndAlgorithms
             for (int i = (list.Count - 1); i > 0; i--)
             {
                 Swap<T>(list, 0, i);
+                // Bring the highest number to the top of the tree.
                 Heapify<T>(list,i,0);
             }
             
