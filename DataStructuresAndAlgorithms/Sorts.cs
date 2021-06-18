@@ -237,6 +237,67 @@ namespace DataStructuresAndAlgorithms
             list[indexB] = tmp;
         }
 
+        public static void HeapSort<T>(List<T> list)
+        {
+            // Build max heap
+            for (int i = list.Count / 2 - 1; i >= 0; i--)
+                Heapify(list, list.Count, i);
+
+
+            for (int i = (list.Count - 1); i > 0; i--)
+            {
+                Swap<T>(list, 0, i);
+                Heapify<T>(list,i,0);
+            }
+            
+        }
+
+        private static void BuildMaxHeap<T>(List<T> list)
+        {
+            for(int i = 1; i < list.Count; i++)
+            {
+                bool t;
+                int index = i;
+                do
+                {
+                    t = false;
+                    int parentIndex = (index - 1) / 2;
+
+                    if (((IComparable)list[index]).CompareTo(list[parentIndex]) > 0)
+                    {
+                        Swap<T>(list, index, parentIndex);
+                        t = true;
+                        index = parentIndex;
+                    }
+                } while (t);
+            }
+        }
+
+        private static void Heapify<T>(List<T> list, int lastIndex, int index)
+        {
+            bool isDone = false;
+            do
+            {
+                isDone = false;
+                int left = 2 * index + 1;
+                int right = 2 * index + 2;
+                int largest = index;
+
+                if (left < lastIndex && ((IComparable)list[largest]).CompareTo(list[left]) < 0)
+                    largest = left;
+             
+                if(right < lastIndex && ((IComparable)list[largest]).CompareTo(list[right]) < 0)
+                    largest = right;
+
+                if (((IComparable)list[index]).CompareTo(list[largest ]) < 0)
+                {
+                    Swap<T>(list, index, largest );
+                    index = largest;
+                    isDone = true;
+                }
+
+            } while (isDone);
+        }
 
     }
 }
