@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using DataStructuresAndAlgorithms;
+using DataStructuresAndAlgorithms.Sorts;
 using System;
 
 namespace DataStructuresAndAlgorithmsUnitTests
