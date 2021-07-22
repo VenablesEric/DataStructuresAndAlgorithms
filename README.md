@@ -11,4 +11,4 @@ Sorts:
 * Heap Sort
 
 Data Structures:
-Linked List
+* Linked List
